@@ -1,13 +1,15 @@
-# 🧠 Behavioral Rate-Limiter (Beyond Hard Thresholds)
+# ML-Driven Behavioral Rate Limiting
 
-## 🚀 Overview
+## Real-Time Bot Detection via Statistical Anomaly Isolation
+
+### 🚀 Overview
 Traditional rate limiters block users after a fixed number of requests (**N requests per minute/hour**). While effective against obvious abuse, they fail to detect **“low-and-slow” bots** that mimic human-like request rates but behave unnaturally.
 
-The **Behavioral Rate-Limiter** uses **Machine Learning** to analyze *user behavior patterns* instead of just request counts.
+This project implements a **behavioral-based detection** engine that identifies ***automated agents*** by analyzing the "rhythm" and "intent" of traffic rather than just the volume.
 
 ---
 
-## 🎯 Key Idea
+###  **Key Idea**
 Instead of asking:
 > "How many requests did the user make?"
 
@@ -16,7 +18,7 @@ We ask:
 
 ---
 
-## ⚙️ Features
+### ⚙️ Features
 - Detects **low-rate bots**
 - Uses **behavioral analysis**
 - Reduces need for CAPTCHAs
@@ -25,42 +27,38 @@ We ask:
 
 ---
 
-## 🧩 Core Concepts
+### 🧩 Core Concepts
 
-### 1. Inter-arrival Time
-Time between consecutive requests.
-```bash
-Human: 1.2s, 5.6s, 0.8s, 10s
-Bot: 2s, 2s, 2s, 2s
-```
+#### *1. Inter-arrival Time*
+* Inter-Arrival Time (IAT) Variance: Calculating the Coefficient of Variation ($CV = \frac{\sigma}{\mu}$) to detect non-human periodicity.
+
+* ```bash
+  Human: 1.2s, 5.6s, 0.8s, 10s
+  Bot: 2s, 2s, 2s, 2s
+  ```
 
 
-### 2. Path Entropy
-Measures randomness in navigation.
-```bash
-Human: /home → /products → /cart → /profile
-Bot: /api/data → /api/data → /api/data
-```
+#### *2. Path Entropy*
+* Measuring the Shannon Entropy of navigation sequences to differentiate between organic user flows and algorithmic scraping.
 
----
-
-### 3. Feature Vector
-Each session is converted into:
-```bash
-[avg_time, variance, entropy, request_count, unique_paths]
-```
+* ```bash
+  Human: /home → /products → /cart → /profile
+  Bot: /api/data → /api/data → /api/data
+  ```
 
 ---
 
-## 🤖 Machine Learning Models
+### 🤖 Machine Learning Models
 
-### K-Nearest Neighbors (KNN)
-- Simple classification
-- Needs labeled data
+* #### **K-Nearest Neighbors (KNN)**
+  - Simple classification
+  - Supervised learning algorithm
+  - Effective for small datasets
 
-### Isolation Forest (Recommended)
-- Detects anomalies
-- Works without labeled data
+* #### **Isolation Forest (Recommended)**
+  - Detects anomalies
+  - Unsupervised leaarning algorithm
+  - Effective for high-dimensional data
 
 ---
 
@@ -70,21 +68,13 @@ Each session is converted into:
   <img src="arch.svg" width="700"/>
 </p>
 
----
+--- 
 
-## 🔧 Tech Stack
+### 📈 Roadmap
+- Feature Engineering & Statistical Analysis on **CIC-IDS2017**.
 
-- Python (ML prototype)
-- Go / Rust (production)
-- scikit-learn
-- numpy, pandas
-- Docker (optional)
+- Model Training & Hyperparameter Tuning (Contamination factor calibration).
 
----
+- Exporting Model Weights for production-ready inference.
 
-## 📦 Installation
-
-```bash
-git clone https://github.com/your-username/behavioral-rate-limiter.git
-cd behavioral-rate-limiter
-pip install -r requirements.txt
+- Phase 2: Development of a high-performance Go/Rust-wrapper for real-time API mitigation.
